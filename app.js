@@ -160,7 +160,7 @@ document.querySelector('.btn-roll').addEventListener('click',function(){
         }
     }
     else{
-        all_players[activePlayer].name.textContent = 'WINNER!';
+        all_players[activePlayer].name.innerHTML ='<b>'+'WINNER!'+'<b>';
         document.querySelector('.dice').style.display = 'none';
     }
 
