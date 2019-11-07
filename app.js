@@ -1,13 +1,3 @@
-/*
-GAME RULES:
-
-- The game has 2 players, playing in rounds
-- In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
-- The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
-
-*/
 
 var scores, roundScore, activePlayer,dice;
 
@@ -42,7 +32,7 @@ function refresh(){
     player_1.current_score.textContent = scores[0];
     player_1.name.textContent = 'Player 1';
     console.log(player_1.panel.classList.value);
-    if(player_1.panel.classList.value != 'player-0-panel active') player_1.panel.classList.add('active');
+    if(player_1.panel.classList.value != 'player-0-panel active')  player_1.panel.classList.value = 'player-0-panel active';
     console.log(player_1.panel.classList.value);
 
     dice = Math.floor(Math.random()*6)+1;
@@ -52,7 +42,7 @@ function refresh(){
     player_2.current_score.textContent = scores[1];
     player_2.name.textContent = 'Player 2';
     console.log(player_2.panel.classList.value);
-    if(player_1.panel.classList.value != 'player-1-panel active') player_2.panel.classList.remove('active');
+    if(player_1.panel.classList.value != 'player-1-panel active') player_2.panel.classList.value = 'player-1-panel';
     console.log(player_2.panel.classList.value);
 
 
@@ -70,6 +60,8 @@ function check_score(score){
 function changing_func(num){
     if (check_score(scores[activePlayer]) == false){
         all_players[activePlayer].name.innerHTML ='<b>'+'WINNER!'+'<b>';
+        all_players[activePlayer].panel.classList.toggle('active');
+        all_players[activePlayer].panel.classList.add('winner');
         document.querySelector('.dice').style.display = 'none';
     }
     else{
@@ -85,6 +77,7 @@ function changing_func(num){
         }
         else{
             all_players[activePlayer].name.innerHTML ='<b>'+'WINNER!'+'<b>';
+            all_players[activePlayer].panel.classList.add('winner');
             document.querySelector('.dice').style.display = 'none';
         }
     }
@@ -93,78 +86,33 @@ function changing_func(num){
 function change_players(){
 
     (activePlayer == 0) ? changing_func(num=1) : changing_func(num=0);
-    // if (activePlayer == 0){
-    //     if (change_score(scores[activePlayer]) == false){
-    //         all_players[activePlayer].name.textContent = 'WINNER!';
-    //     }
-    //     else{
-    //         scores[activePlayer] += roundScore;
-    //         (roundScore == 0) ? console.log("roundScore is already = 0") : roundScore = 0;
-    //         all_players[activePlayer].panel.classList.toggle('active');
-    //         all_players[activePlayer].score.textContent = scores[activePlayer];
-    //         if (check_score(scores[activePlayer]) != false){
-    //             (all_players[activePlayer].current_score.textContent > 0) ? all_players[activePlayer].current_score.textContent = '0' : console.log('its already 0');        
-    //             activePlayer = 1;
-    //             all_players[activePlayer].panel.classList.toggle('active');
-    //             document.querySelector('.dice').style.display = "none";
-    //         }
-    //         else{
-    //             all_players[activePlayer].name.textContent = 'WINNER!';
-    //         }
-    //     }
-
-    // }
-    // else if (activePlayer == 1){
-    //     if (change_score(scores[activePlayer]) == false){
-    //         all_players[activePlayer].name.textContent = 'WINNER!';
-    //     }
-    //     else{
-    //         scores[activePlayer] += roundScore;
-    //         (roundScore == 0) ? console.log("roundScore is already = 0") : roundScore = 0;
-    //         all_players[activePlayer].panel.classList.toggle('active');
-    //         all_players[activePlayer].score.textContent = scores[activePlayer];
-    //         if (check_score(scores[activePlayer]) != false){
-    //         (all_players[activePlayer].current_score.textContent > 0) ? all_players[activePlayer].current_score.textContent = '0' : console.log('its already 0');        
-    //         activePlayer = 0;
-    //         all_players[activePlayer].panel.classList.toggle('active');
-    //         document.querySelector('.dice').style.display = "none";
-    //         }
-    //         else{
-    //             all_players[activePlayer].name.textContent = 'WINNER!';
-    //         }
-    //     }
-    
-    // }
 }
 
 refresh();
 
-document.querySelector('.btn-roll').addEventListener('click',function(){
-    if(check_score(scores[activePlayer]) != false){
+function froll_dice(){
+    if (check_score(scores[activePlayer]) != false){
         var dice = Math.floor(Math.random()*6)+1;
-        if(dice == 1){
+        if (dice == 1){
             all_players[activePlayer].current_score.textContent = '0';
             roundScore = 0;
-            // all_players[activePlayer].score.textContent = scores[activePlayer];
-            console.log("Other players turn");
             change_players();
         }
-        else
-        {
+        else{
             var diceDOM = document.querySelector('.dice');
             diceDOM.style.display = 'block';
             diceDOM.src ='dice-'+dice+'.png';
             roundScore+=dice;
             all_players[activePlayer].current_score.textContent = roundScore;
-        
+            if (check_score(score[activePlayer])){
+                all_players[activePlayer].panel.toggle('active');
+                all_players[activePlayer].panel.add('winner');
+            }
         }
     }
-    else{
-        all_players[activePlayer].name.innerHTML ='<b>'+'WINNER!'+'<b>';
-        document.querySelector('.dice').style.display = 'none';
-    }
+}
 
-});
+document.querySelector('.btn-roll').addEventListener('click',froll_dice);
 
 document.querySelector('.btn-hold').addEventListener('click',change_players);
 
