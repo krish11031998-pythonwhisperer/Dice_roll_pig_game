@@ -24,21 +24,23 @@ var player_2 = {
 var all_players = new Array(player_1,player_2);
 
 function refresh(){
-    document.querySelector('.dice').style.display = "none";
-    dice = Math.floor(Math.random()*6)+1;
-    console.log(dice);
-    player_1.score.textContent = dice;
-    scores[0] = dice;
+    // document.querySelector('.dice').style.display = "none";
+    // dice = Math.floor(Math.random()*6)+1;
+    // console.log(dice);
+    player_1.score.textContent = '0';
+    // scores[0] = dice;
     player_1.current_score.textContent = scores[0];
     player_1.name.textContent = 'Player 1';
     console.log(player_1.panel.classList.value);
     if(player_1.panel.classList.value != 'player-0-panel active')  player_1.panel.classList.value = 'player-0-panel active';
     console.log(player_1.panel.classList.value);
 
-    dice = Math.floor(Math.random()*6)+1;
-    console.log(dice);
-    player_2.score.textContent = dice;
-    scores[1] = dice;
+    document.querySelector('.dice').style.display = 'none';
+
+    // dice = Math.floor(Math.random()*6)+1;
+    // console.log(dice);
+    player_2.score.textContent = '0';
+    // scores[1] = dice;
     player_2.current_score.textContent = scores[1];
     player_2.name.textContent = 'Player 2';
     console.log(player_2.panel.classList.value);
@@ -104,9 +106,9 @@ function froll_dice(){
             diceDOM.src ='dice-'+dice+'.png';
             roundScore+=dice;
             all_players[activePlayer].current_score.textContent = roundScore;
-            if (check_score(score[activePlayer])){
-                all_players[activePlayer].panel.toggle('active');
-                all_players[activePlayer].panel.add('winner');
+            if (check_score(scores[activePlayer]) == false){
+                all_players[activePlayer].panel.classList.toggle('active');
+                all_players[activePlayer].panel.classList.add('winner');
             }
         }
     }
